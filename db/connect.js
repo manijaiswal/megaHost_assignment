@@ -6,8 +6,9 @@ mongoose.set('useCreateIndex',true);
 
 var logger  = log4jsLogger.getLogger('Database');
 
-
-mongoose.connect('mongodb://localhost:27017/'+configs.DB_NAME,{useNewUrlParser: true },(err)=>{
+// mongodb://manish:Nitp123@ds145208.mlab.com:45208/megahost
+// 'mongodb://localhost:27017/'+configs.DB_NAME
+mongoose.connect('mongodb://manish:Nitp123@ds145208.mlab.com:45208/megahost',{useNewUrlParser: true },(err)=>{
     if(err){
         logger.error({"r":"mongodb","msg":"mongodb_connection_error","body":err});
         console.log(err);
