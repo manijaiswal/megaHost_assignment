@@ -8,7 +8,8 @@ var errors ={
     "email_invalid"        :    [500,"Email is not valid or disposal"],
     "email_not_sent"       :    [600,"Otp is not sent on given email address"],
     "otp_invalid"          :    [700,"Otp is invalid or used"],
-    "account_doesnot_exist":    [800,"account doesnot exist"]
+    "account_doesnot_exist":    [800,"account doesnot exist"],
+    "password_not_match":[900,"Password not match with this number"]
 }
 
 module.exports = errors;

@@ -50,7 +50,7 @@ app.run(['$rootScope','$location','ipCookie','$state','$window','ApiFactory',fun
             data["tags"]="story"; 
             data["page"] = 2;
     
-            ApiFactory.get('GET','http://hn.algolia.com/api/v1/search',$location.search(),{})
+            ApiFactory.get('GET','https://hn.algolia.com/api/v1/search',$location.search(),{})
             .then((res)=>{
                 console.log(res);
                 $rootScope.hits = res.hits;

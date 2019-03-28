@@ -66,7 +66,7 @@ router.post('/cr_acc',(req,res)=>{
 
         if(profile_data.length>0){
             logger.error({"r":"cr_acc","method":"post","msg":"Account already exists"});
-            return sendError(res,"Account already exists","account_already_exists",constants.BAD_REQUEST); 
+            return sendError(res,"Account already exists","account_already_exist",constants.BAD_REQUEST); 
         }
 
         if(profile_data.length==0){
@@ -179,7 +179,7 @@ router.post('/login',(req,res)=>{
 
         if(profile_data.length==0){
             logger.error({"r":"login","method":"post","msg":"Account doesnot exists"});
-            return sendError(res,"Account doesnot exists","account_not_exists",constants.BAD_REQUEST); 
+            return sendError(res,"Account doesnot exists","account_doesnot_exist",constants.BAD_REQUEST); 
         }
 
         if(profile_data.length>0){
@@ -202,7 +202,7 @@ router.post('/login',(req,res)=>{
                 }
                 else{
                     logger.error({"r":"login","method":'post',"msg":"Password not match with this number"});
-                    return sendError(res,"Password not match with this number","password_not_match",constants.BAD_REQUEST); 
+                    return sendError(res,"Password not match with this email","password_not_match",constants.BAD_REQUEST); 
                 }
             })
 

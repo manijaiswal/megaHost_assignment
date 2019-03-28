@@ -37,6 +37,7 @@ MainController.controller('MainController',['$scope','$http','$location','ipCook
             ipCookie('aid',aid);    
             $scope.bg_disable = false;
             $scope.loaded     = true;
+            alert("please check your mail for verify your account")
             $location.path('/verify');
             return;
 
@@ -88,7 +89,8 @@ MainController.controller('MainController',['$scope','$http','$location','ipCook
             var aid = res.data['account']['_id'];
             var token = res.data['token']
             ipCookie('aid',aid); 
-            ipCookie('token',token);   
+            ipCookie('token',token);  
+            alert("successfully created your account");
             $scope.bg_disable = false;
             $scope.loaded     = true;
             $location.path('/');
