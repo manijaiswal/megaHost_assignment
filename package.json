@@ -1,0 +1,23 @@
+{
+  "name": "magehost",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "server": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "bcrypt": "^3.0.5",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "express-validator": "^5.3.1",
+    "http-errors": "~1.6.2",
+    "jsonwebtoken": "^8.5.1",
+    "log4js": "^4.1.0",
+    "mongoose": "^5.4.20",
+    "morgan": "~1.9.0",
+    "nodemailer": "^6.0.0",
+    "nodemailer-express-handlebars": "^3.0.0"
+  }
+}

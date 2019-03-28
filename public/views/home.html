@@ -1,0 +1,60 @@
+<div class="row" style="margin-top:2%">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-1">
+                <p>search</p>
+            </div>
+            <div class="col-md-2" style="margin-left:16px">
+                <select ng-change="check()" ng-model="searchData1" ng-options="data.query as data.value for data in search">
+                    <option value="">Story</option>
+                </select>
+            </div>
+            <div class="col-md-2" style="margin-left:22px">
+                <p>tags</p>
+            </div>
+            <div class="col-md-2" style="margin-left: -34px;">
+                <select ng-change="check(searchData3)" ng-model="searchData2" ng-options="data.tags as data.value for data in tags">
+                    <option value="">tags</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <p style="float:right;">{{collect.nbHits}} results ({{collect.processingTimeMS/10000}}seconds)</p>
+    </div>
+</div>
+
+<div class="row" style="margin-top:2%">
+    <div class="col-md-12 col-12 col-sm-12">
+        <div class="list-group">
+            <li class="list-group-item list-group-item-action flex-column align-items-start" style="background:#f6f6ef;cursor: pointer;"
+                ng-repeat="list in hits track by $index" ng-click="redirectPage(list.url)">
+                <div class="d-flex w-100 justify-content-between">
+                </div>
+                <p class="mb-1" style="color:black;">{{list.title || " this is great side from us"}}</p>
+                <div>
+                    <ul class="list-inline">
+                        <li class="list-inline-item">{{list.points}} points |</li>
+                        <li class="list-inline-item">{{list.author}} |</li>
+                        <li class="list-inline-item">{{list.created_at | date}} |</li>
+                        <li class="list-inline-item">{{list.num_comments}} comments | <a href={{list.url}} target="_blank">click
+                                here to read more....</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="list-group-item list-group-item-action flex-column align-items-start">
+                <nav aria-label="..." style="padding-left:25%">
+                    <ul class="pagination pagination-sm" >
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">1</a>
+                        </li>
+                        <li class="page-item" ng-repeat="x in [2,3,4,5,6,7,8,9,10,11,12] track by $index"><a class="page-link" href="" ng-click="check(x)">{{x}}</a></li>
+                        
+                    </ul>
+                </nav>
+            
+            </li>
+        </div>
+    </div>
+</div>
