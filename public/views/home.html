@@ -1,3 +1,4 @@
+<div ng-include="'templates/loader.html'" ng-if="loaded1==false"></div>
 <div class="row" style="margin-top:2%">
     <div class="col-md-6">
         <div class="row">
@@ -43,7 +44,7 @@
                     </ul>
                 </div>
             </li>
-            <li class="list-group-item list-group-item-action flex-column align-items-start">
+            <li class="list-group-item list-group-item-action flex-column align-items-start" ng-if="loaded1==true">
                 <nav aria-label="..." style="padding-left:25%">
                     <ul class="pagination pagination-sm" >
                         <li class="page-item disabled">

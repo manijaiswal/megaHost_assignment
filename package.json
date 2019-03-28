@@ -6,6 +6,9 @@
     "start": "node ./bin/www",
     "server": "nodemon ./bin/www"
   },
+  "engines": {
+    "node": "6.14.2"
+  },
   "dependencies": {
     "bcrypt": "^3.0.5",
     "cookie-parser": "~1.4.3",

@@ -43,8 +43,7 @@ app.run(['$rootScope','$location','ipCookie','$state','$window','ApiFactory',fun
          $rootScope.loc = $location.path();
 
         $rootScope.fetchData = function(){
-            $rootScope.bg_disable = true;
-            $rootScope.loaded     = false;
+            $rootScope.loaded1     = false;
             console.log($location.search());
             var data = {};
             data['query'] = "foo";
@@ -56,8 +55,7 @@ app.run(['$rootScope','$location','ipCookie','$state','$window','ApiFactory',fun
                 console.log(res);
                 $rootScope.hits = res.hits;
                 $rootScope.collect = res;
-                $rootScope.bg_disable = false;
-                $rootScope.loaded = true;
+                $rootScope.loaded1 = true;
             })
             .catch((e)=>{
                 $rootScope.bg_disable = false;
