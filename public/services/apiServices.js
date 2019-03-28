@@ -56,7 +56,7 @@ ApiFactory.factory('ApiFactory',['$http','$q',function($http,$q){
     
 
     data.RESOURCE_URL = function(){
-        return "http://localhost:3000";  //http://localhost:3000  //https://vizack-tech.herokuapp.com/ https://medexpertnitp.herokuapp.com/ https://lyfline.herokuapp.com/
+        return "https://megahost.herokuapp.com";  //http://localhost:3000   https://megahost.herokuapp.com/ 
     }
 
     return data;

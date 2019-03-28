@@ -1,4 +1,4 @@
-var app = angular.module('app',['ngRoute','ipCookie','ui.router','ui.bootstrap','MainController','HeaderController','EditProfileController','chart.js']);
+var app = angular.module('app',['ngRoute','ipCookie','ui.router','ui.bootstrap','MainController','chart.js']);
 
 
 app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
