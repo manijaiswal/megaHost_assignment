@@ -2,12 +2,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mysql  = require("mysql");
 
 var expressValidator= require('express-validator');
 
 require('./db/connect');
 
 var accounts    = require('./routes/accounts');
+var csvRoutes   = require('./routes/csvRoutes');
 
 
 var app = express();
@@ -56,8 +58,23 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use('/accounts',accounts);
 
+
+app.use('/accounts',accounts);
+app.use(function(req,res,next){
+  res.locals.connection = mysql.createConnection({
+    host:'139.59.60.246',
+    user:'root',
+    password:'dcf15f570735b1205ba2ebf26c0c5ff63347836f466cefff',
+    database:'meridian_academy'
+  })
+
+  res.locals.connection.connect();
+  next();
+
+})
+
+app.use('/csv',csvRoutes);
 
 
 

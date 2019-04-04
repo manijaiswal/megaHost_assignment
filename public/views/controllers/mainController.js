@@ -1,4 +1,4 @@
-var MainController  = angular.module('MainController',['ApiFactory','ui.bootstrap','chart.js']);
+var MainController  = angular.module('MainController',['ApiFactory','ui.bootstrap','chart.js','ngFileUpload']);
 
 MainController.controller('MainController',['$scope','$http','$location','ipCookie','ApiFactory',"$window",function($scope,$http,$location,ipCookie,ApiFactory,$window){
     console.log('In main controller');
@@ -160,32 +160,133 @@ MainController.controller('MainController',['$scope','$http','$location','ipCook
     }
 
 
-    // $scope.hits = [];
-    // $scope.collect = {};
-    // $scope.fetchData = function(){
-    //     $scope.bg_disable = true;
-    //     $scope.loaded     = false;
-    //     var data = {};
-    //     data['query'] = "foo";
-    //     data["tags"]="story"; 
-    //     data["page"] = 2;
+    $scope.readCSV = function() {
+        // http get request to read CSV file content
+        $http({method:'GET',
+        url:'data/users.csv'}).then($scope.processData);
+    };
 
-    //     ApiFactory.get('GET','http://hn.algolia.com/api/v1/search',data,{})
-    //     .then((res)=>{
-    //         console.log(res);
-    //         $scope.hits = res.hits;
-    //         $scope.collect = res;
-    //         $scope.bg_disable = false;
-    //         $scope.loaded = true;
-    //     })
-    //     .catch((e)=>{
-    //         alert(e);
-    //         $scope.bg_disable = false;
-    //         $scope.loaded = true;
-    //         console.log("err",e);
-    //     }) 
-    // }
-  
+    $scope.processData = function(allText) {
+        // split content based on new line
+        console.log(allText);
+        var allTextLines = allText.data.split(/\r\n|\n/);
+        var headers = allTextLines[0].split(',');
+        var lines = [];
+
+        for ( var i = 0; i < allTextLines.length; i++) {
+            // split content based on comma
+            var data = allTextLines[i].split(',');
+            if (data.length == headers.length) {
+                var tarr = [];
+                for ( var j = 0; j < headers.length; j++) {
+                    tarr.push(data[j]);
+                }
+                lines.push(tarr);
+            }
+        }
+        $scope.data = lines;
+        console.log($scope.data);
+    };
+    
+    $scope.SelectFile = function(data){
+        console.log(data);
+        $scope.SelectedFile = data;
+
+    }
+
+    $scope.Upload = function () {
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+        if (regex.test($scope.SelectedFile.name.toLowerCase())) {
+            if (typeof (FileReader) != "undefined") {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var customers = new Array();
+                    var rows = e.target.result.split(/\r\n|\n/);
+                    
+                    // for (var i = 0; i < rows.length; i++) {
+                    //     var cells = rows[i].split(",");
+                    //     if (cells.length > 1) {
+                    //         var customer = {};
+                    //         customer.CustomerId = cells[0];
+                    //         customer.Name = cells[1];
+                    //         customer.Country = cells[2];
+                    //         customers.push(customer);
+                    //         $scope.$apply(function () {
+                    //             $scope.Customers = customers;
+                    //             console.log($scope.Customers)
+                    //             $scope.IsVisible = true;
+                    //         });
+                    //     }
+                    // }
+
+                    var allTextLines = e.target.result.split(/\r\n|\n/);
+                    var headers = allTextLines[0].split(',');
+                    var lines = [];
+                    var lines2 = [];
+                    var lines3  = [];
+                    var line4   = [];
+            
+                    for ( var i = 0; i < allTextLines.length; i++) {
+                        // split content based on comma
+                        var data = allTextLines[i].split(',');
+                        // console.log(data);
+                        if (data.length == headers.length) {
+                            var tarr = [];
+                            var tarr2 = [];
+                            var tarr3 = [];
+                            var tarr4 = [];
+                            for ( var j = 0; j < headers.length; j++) {
+                                if(j<18){
+                                    tarr.push(data[j].replace(/"/g,""));
+                                    if(j>=4){
+                                        tarr3.push(data[j].replace(/"/g,""));
+                                    }
+                                    if(j>=7 && j<=10){
+                                        tarr4.push(data[j].replace(/"/g,""));
+                                    }
+                                }
+                                else if(j>=18 && j<32){
+                                    tarr2.push(data[j].replace(/"/g,""));
+                                }
+                                else if(j>=32 && j<36){
+                                    tarr3.push(data[j].replace(/"/g,""));
+                                }
+                                else if(j>=36){
+                                    tarr4.push(data[j].replace(/"/g,""));
+                                }
+                                
+                            }
+                            lines.push(tarr);
+                            lines2.push(tarr2);
+                            lines3.push(tarr3);
+                            line4.push(tarr4);
+                        }
+                    }
+
+                    var x = {};
+                    x['user'] = lines;
+                    x['graudian'] = lines2
+                    x['student_user']  = lines3
+                    x['student'] = line4;
+                    console.log(x);
+
+                    ApiFactory.save('POST','/csv/insert',x)
+                    .then((res)=>{
+                        console.log(res);
+                    }).catch((e)=>{
+                        console.log(e);
+                    })
+
+
+                }
+                reader.readAsText($scope.SelectedFile);
+            } else {
+                $window.alert("This browser does not support HTML5.");
+            }
+        } else {
+            $window.alert("Please upload a valid CSV file.");
+        }
+    }
 
 
 
@@ -194,6 +295,10 @@ MainController.controller('MainController',['$scope','$http','$location','ipCook
        if($location.path()=="/dashboard"){
            $scope.initProfile();
        }
+
+    //    if($location.path()=="/file"){
+    //        $scope.readCSV();
+    //    }
     }
 
 

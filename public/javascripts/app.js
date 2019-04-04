@@ -1,4 +1,4 @@
-var app = angular.module('app',['ngRoute','ipCookie','ui.router','ui.bootstrap','MainController','chart.js']);
+var app = angular.module('app',['ngRoute','ipCookie','ui.router','ui.bootstrap','MainController','chart.js','ngFileUpload']);
 
 
 app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
@@ -32,6 +32,11 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
     .state('dashboard',{
         url:'/dashboard',
         templateUrl:'views/dashboard.html',
+        controller:'MainController'
+    })
+    .state('fileReader',{
+        url:'/file',
+        templateUrl:'views/fileReader.html',
         controller:'MainController'
     })
 }]);    
