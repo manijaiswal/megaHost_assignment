@@ -15,6 +15,7 @@ router.post('/insert', function(req, res, next) {
     req.checkBody('graudian',errorCodes.invalid_parameters[1]).notEmpty();
     req.checkBody('student_user',errorCodes.invalid_parameters[1]).notEmpty();
     req.checkBody('student',errorCodes.invalid_parameters[1]).notEmpty();
+    req.checkBody('enroll',errorCodes.invalid_parameters[1]).notEmpty();
 
     if(req.validationErrors()){
         logger.error({"r":"cr_acc","method":"post","msg":errorCodes.invalid_parameters[1],"p":req.body});
@@ -25,6 +26,7 @@ router.post('/insert', function(req, res, next) {
     var graudian = req.body.graudian;
     var student_user = req.body.student_user;
     var student      = req.body.student;
+    var enroll       = req.body.enroll;
 
     
     var sql = "INSERT INTO users (role_id,password,temp_password,email,reset_key,status,last_logged_in,created_at,modified_at,created_by,modified_by,api,is_login,socket_id,is_live,last_online,otp,fcm_token) VALUES ?";
@@ -78,8 +80,6 @@ router.post('/insert', function(req, res, next) {
                                 console.log(err);
                                 return sendError(res,err,"server_error",constants.SERVER_ERROR);
                             }
-    
-    
                             var student_user_fetch_query = 'SELECT * FROM users WHERE role_id=4';
                             res.locals.connection.query(student_user_fetch_query,function(err,results2){
                                 if(err){
@@ -103,15 +103,41 @@ router.post('/insert', function(req, res, next) {
                                             console.log(err);
                                             return sendError(res,err,"server_error",constants.SERVER_ERROR);
                                         }
-    
-                                        return sendSuccess(res,student);
+
+                                        var student_fetch = "SELECT * FROM students";
+                                        res.locals.connection.query(student_fetch,function(err,students){
+                                            if(err){
+                                                console.log(err);
+                                                return sendError(res,err,"server_error",constants.SERVER_ERROR);
+                                            }
+
+                                            console.log(enroll)
+
+                                    
+                                            for(var j=0;j<students.length;j++){
+                                                enroll[j].push(students[j]['id']);
+                                                enroll[j].push("1");
+                                            }
+
+                                            console.log(enroll)
+
+                                            var enroll_create = "INSERT INTO enrollments (created_at,modified_at,created_by,modified_by,roll_no,academic_year_id,class_id,section_id,student_id,status) VALUES ?";
+
+                                            res.locals.connection.query(enroll_create, [enroll], function(err,data) {
+                                                if(err){
+                                                    console.log(err);
+                                                    return sendError(res,err,"server_error",constants.SERVER_ERROR);
+                                                }
+
+                                                return sendSuccess(res,enroll);
+
+                                            })    
+                                        })
+                                        
                                     })    
                                 }
     
-                            })    
-    
-                            return sendSuccess(res,graudian);
-    
+                            })        
                         })  
 
 

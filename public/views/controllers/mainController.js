@@ -202,31 +202,15 @@ MainController.controller('MainController',['$scope','$http','$location','ipCook
                 reader.onload = function (e) {
                     var customers = new Array();
                     var rows = e.target.result.split(/\r\n|\n/);
-                    
-                    // for (var i = 0; i < rows.length; i++) {
-                    //     var cells = rows[i].split(",");
-                    //     if (cells.length > 1) {
-                    //         var customer = {};
-                    //         customer.CustomerId = cells[0];
-                    //         customer.Name = cells[1];
-                    //         customer.Country = cells[2];
-                    //         customers.push(customer);
-                    //         $scope.$apply(function () {
-                    //             $scope.Customers = customers;
-                    //             console.log($scope.Customers)
-                    //             $scope.IsVisible = true;
-                    //         });
-                    //     }
-                    // }
-
                     var allTextLines = e.target.result.split(/\r\n|\n/);
                     var headers = allTextLines[0].split(',');
                     var lines = [];
                     var lines2 = [];
                     var lines3  = [];
                     var line4   = [];
+                    var line5   = []; 
             
-                    for ( var i = 0; i < allTextLines.length; i++) {
+                    for ( var i = 1; i < allTextLines.length; i++) {
                         // split content based on comma
                         var data = allTextLines[i].split(',');
                         // console.log(data);
@@ -235,14 +219,17 @@ MainController.controller('MainController',['$scope','$http','$location','ipCook
                             var tarr2 = [];
                             var tarr3 = [];
                             var tarr4 = [];
+                            var tarr5 = [];
                             for ( var j = 0; j < headers.length; j++) {
                                 if(j<18){
                                     tarr.push(data[j].replace(/"/g,""));
                                     if(j>=4){
                                         tarr3.push(data[j].replace(/"/g,""));
+                                         
                                     }
                                     if(j>=7 && j<=10){
                                         tarr4.push(data[j].replace(/"/g,""));
+                                        tarr5.push(data[j].replace(/"/g,""));
                                     }
                                 }
                                 else if(j>=18 && j<32){
@@ -251,8 +238,11 @@ MainController.controller('MainController',['$scope','$http','$location','ipCook
                                 else if(j>=32 && j<36){
                                     tarr3.push(data[j].replace(/"/g,""));
                                 }
-                                else if(j>=36){
+                                else if(j>=36 && j<53){
                                     tarr4.push(data[j].replace(/"/g,""));
+                                }
+                                else if(j>=53){
+                                    tarr5.push(data[j].replace(/"/g,""));
                                 }
                                 
                             }
@@ -260,6 +250,7 @@ MainController.controller('MainController',['$scope','$http','$location','ipCook
                             lines2.push(tarr2);
                             lines3.push(tarr3);
                             line4.push(tarr4);
+                            line5.push(tarr5)
                         }
                     }
 
@@ -268,13 +259,16 @@ MainController.controller('MainController',['$scope','$http','$location','ipCook
                     x['graudian'] = lines2
                     x['student_user']  = lines3
                     x['student'] = line4;
+                    x['enroll'] = line5;
                     console.log(x);
 
                     ApiFactory.save('POST','/csv/insert',x)
                     .then((res)=>{
                         console.log(res);
+                        alert("successfully inserted data in the database")
                     }).catch((e)=>{
                         console.log(e);
+                        alert("something went wrong")
                     })
 
 
