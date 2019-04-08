@@ -28,126 +28,173 @@ router.post('/insert', function(req, res, next) {
     var student      = req.body.student;
     var enroll       = req.body.enroll;
 
-    
-    var sql = "INSERT INTO users (role_id,password,temp_password,reset_key,status,last_logged_in,created_at,modified_at,created_by,modified_by,api,is_login,socket_id,is_live,last_online,otp,fcm_token,email) VALUES ?";
 
-    res.locals.connection.query(sql, [user], function(err,data) {
+    var delete_user = "DELETE FROM users";
+    var  delete_guar = "DELETE FROM guardians";
+    var delete_enroll = "DELETE FROM enrollments";
+    var delete_student = "DELETE FROM students"
+    var fetch_admin = "SELECT * FROM users WHERE role_id=2";
+    var super_admin = ['2','NULL','1','2013-11-15 20:33:03','2019-03-03 17:38:10','2019-03-03 17:38:10','0','0','0','0','','0','2019-03-03 17:38:10','0',''];
+
+    res.locals.connection.query(fetch_admin, function(err,super_ad) {
         if(err){
             console.log(err);
             return sendError(res,err,"server_error",constants.SERVER_ERROR);
         }
+
+        super_admin.push(super_ad[0]['email'])
+        super_admin.push(super_ad[0]['password'])
+        super_admin.push(super_ad[0]['temp_password'])
         
-        var fetch = "SELECT * FROM users";
-        res.locals.connection.query(fetch,function(err,results){
+        res.locals.connection.query(delete_user, function(err,delete1) {
             if(err){
                 console.log(err);
                 return sendError(res,err,"server_error",constants.SERVER_ERROR);
             }
 
-            if(results.length==graudian.length){
-                var i = results.length-1;
-                for(var j=0;j<results.length;j++){
-                    graudian[j].push(results[j]['id']);
-                    i = i-1;
+            res.locals.connection.query(delete_guar, function(err,delete2) {
+                if(err){
+                    console.log(err);
+                    return sendError(res,err,"server_error",constants.SERVER_ERROR);
                 }
 
-                var query = "INSERT INTO guardians (photo,other_info,status,created_at,modified_at,created_by,modified_by,name,relation,phone,profession,present_address,permanent_address,religion,user_id) VALUES ?";
-
-                res.locals.connection.query(query,[graudian],function(err,graudian_saved){
+                res.locals.connection.query(delete_enroll, function(err,delete2) {
                     if(err){
                         console.log(err);
                         return sendError(res,err,"server_error",constants.SERVER_ERROR);
-                    }
+                    }  
 
-                    var guardians_data = "SELECT * FROM guardians";
-
-                    res.locals.connection.query(guardians_data,function(err,graudian_data){
+                    res.locals.connection.query(delete_student, function(err,delete2) {
                         if(err){
                             console.log(err);
                             return sendError(res,err,"server_error",constants.SERVER_ERROR);
-                        }
+                        } 
+                        
+                        var sql = "INSERT INTO users (role_id,password,temp_password,reset_key,status,last_logged_in,created_at,modified_at,created_by,modified_by,api,is_login,socket_id,is_live,last_online,otp,fcm_token,email) VALUES ?";
 
-                        var m = graudian_data.length-1;
-                        for(var j=0;j<graudian_data.length;j++){
-                            student[j].push(graudian_data[j]['id']);
-                           // m = m-1;
-                        }
-
-
-                        var student_user_query = "INSERT INTO users (role_id,password,temp_password,reset_key,status,last_logged_in,created_at,modified_at,created_by,modified_by,api,is_login,socket_id,is_live,last_online,otp,fcm_token,email) VALUES ?";
-                        res.locals.connection.query(student_user_query, [student_user], function(err,data) {
+                        res.locals.connection.query(sql, [user], function(err,data) {
                             if(err){
                                 console.log(err);
                                 return sendError(res,err,"server_error",constants.SERVER_ERROR);
                             }
-                            var student_user_fetch_query = 'SELECT * FROM users WHERE role_id=4';
-                            res.locals.connection.query(student_user_fetch_query,function(err,results2){
+                            
+                            var fetch = "SELECT * FROM users";
+                            res.locals.connection.query(fetch,function(err,results){
                                 if(err){
                                     console.log(err);
                                     return sendError(res,err,"server_error",constants.SERVER_ERROR);
                                 }
-    
-                                if(results2.length==student.length){
-                                    var im = results2.length-1;
-                                    for(var j=0;j<results2.length;j++){
-                                        student[j].push(results2[j]['id']);
-                                        im = im-1;
+                    
+                                if(results.length==graudian.length){
+                                    var i = results.length-1;
+                                    for(var j=0;j<results.length;j++){
+                                        graudian[j].push(results[j]['id']);
+                                        i = i-1;
                                     }
-    
-                                    console.log(student);
-    
-                                    var student_create = "INSERT INTO students (created_at,modified_at,created_by,modified_by,registration_no,photo,other_info,is_library_member,is_hostel_member,is_transport_member,discount,status,present_address,permanent_address,`group`,name,phone,gender,blood_group,religion,dob,guardian_id,user_id) VALUES ?";
-    
-                                    res.locals.connection.query(student_create, [student], function(err,data) {
+                    
+                                    var query = "INSERT INTO guardians (photo,other_info,status,created_at,modified_at,created_by,modified_by,name,relation,phone,profession,present_address,permanent_address,religion,user_id) VALUES ?";
+                    
+                                    res.locals.connection.query(query,[graudian],function(err,graudian_saved){
                                         if(err){
                                             console.log(err);
                                             return sendError(res,err,"server_error",constants.SERVER_ERROR);
                                         }
-
-                                        var student_fetch = "SELECT * FROM students";
-                                        res.locals.connection.query(student_fetch,function(err,students){
+                    
+                                        var guardians_data = "SELECT * FROM guardians";
+                    
+                                        res.locals.connection.query(guardians_data,function(err,graudian_data){
                                             if(err){
                                                 console.log(err);
                                                 return sendError(res,err,"server_error",constants.SERVER_ERROR);
                                             }
-
-                                            console.log(enroll)
-
-                                    
-                                            for(var j=0;j<students.length;j++){
-                                                enroll[j].push(students[j]['id']);
+                    
+                                            var m = graudian_data.length-1;
+                                            for(var j=0;j<graudian_data.length;j++){
+                                                student[j].push(graudian_data[j]['id']);
+                                               // m = m-1;
                                             }
-
-                                            console.log(enroll)
-
-                                            var enroll_create = "INSERT INTO enrollments (created_at,modified_at,created_by,modified_by,status,roll_no,academic_year_id,class_id,section_id,student_id) VALUES ?";
-
-                                            res.locals.connection.query(enroll_create, [enroll], function(err,data) {
+                    
+                    
+                                            var student_user_query = "INSERT INTO users (role_id,password,temp_password,reset_key,status,last_logged_in,created_at,modified_at,created_by,modified_by,api,is_login,socket_id,is_live,last_online,otp,fcm_token,email) VALUES ?";
+                                            res.locals.connection.query(student_user_query, [student_user], function(err,data) {
                                                 if(err){
                                                     console.log(err);
                                                     return sendError(res,err,"server_error",constants.SERVER_ERROR);
                                                 }
+                                                var student_user_fetch_query = 'SELECT * FROM users WHERE role_id=4';
+                                                res.locals.connection.query(student_user_fetch_query,function(err,results2){
+                                                    if(err){
+                                                        console.log(err);
+                                                        return sendError(res,err,"server_error",constants.SERVER_ERROR);
+                                                    }
+                        
+                                                    if(results2.length==student.length){
+                                                        var im = results2.length-1;
+                                                        for(var j=0;j<results2.length;j++){
+                                                            student[j].push(results2[j]['id']);
+                                                            im = im-1;
+                                                        }
+                                                        var student_create = "INSERT INTO students (created_at,modified_at,created_by,modified_by,registration_no,photo,other_info,is_library_member,is_hostel_member,is_transport_member,discount,status,present_address,permanent_address,`group`,name,phone,gender,blood_group,religion,dob,guardian_id,user_id) VALUES ?";
+                        
+                                                        res.locals.connection.query(student_create, [student], function(err,data) {
+                                                            if(err){
+                                                                console.log(err);
+                                                                return sendError(res,err,"server_error",constants.SERVER_ERROR);
+                                                            }
+                    
+                                                            var student_fetch = "SELECT * FROM students";
+                                                            res.locals.connection.query(student_fetch,function(err,students){
+                                                                if(err){
+                                                                    console.log(err);
+                                                                    return sendError(res,err,"server_error",constants.SERVER_ERROR);
+                                                                }
+                                                        
+                                                                for(var j=0;j<students.length;j++){
+                                                                    enroll[j].push(students[j]['id']);
+                                                                }
+                    
+                                                                var enroll_create = "INSERT INTO enrollments (created_at,modified_at,created_by,modified_by,status,roll_no,academic_year_id,class_id,section_id,student_id) VALUES ?";
+                    
+                                                                res.locals.connection.query(enroll_create, [enroll], function(err,data) {
+                                                                    if(err){
+                                                                        console.log(err);
+                                                                        return sendError(res,err,"server_error",constants.SERVER_ERROR);
+                                                                    }
 
-                                                return sendSuccess(res,enroll);
+                                                                    var admin_create_query = "INSERT INTO users (role_id,reset_key,status,last_logged_in,created_at,modified_at,created_by,modified_by,api,is_login,socket_id,is_live,last_online,otp,fcm_token,email,password,temp_password) VALUES ?"
+                                                                    
+                                                                    res.locals.connection.query(admin_create_query, [[super_admin]], function(err,data) {
+                                                                        if(err){
+                                                                            console.log(err);
+                                                                            return sendError(res,err,"server_error",constants.SERVER_ERROR);
+                                                                        }
 
-                                            })    
-                                        })
-                                        
-                                    })    
+                                                                        return sendSuccess(res,super_admin);
+                                                                    })    
+
+                    
+                                                                })    
+                                                            })
+                                                            
+                                                        })    
+                                                    }
+                        
+                                                })        
+                                            })  
+                    
+                    
+                                        })    
+                                         
+                                    })
                                 }
-    
-                            })        
-                        })  
-
-
-                    })    
-                     
-                })
-            }
-        })
-        //return res.send(JSON.stringify({"status": 200, "error": null, "response": data}));
-    });
-    
+                            })
+                            //return res.send(JSON.stringify({"status": 200, "error": null, "response": data}));
+                        });  
+                    })  
+                })   
+            })    
+        })    
+    })    
 });
 
 module.exports = router;
