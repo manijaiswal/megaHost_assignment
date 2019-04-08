@@ -35,17 +35,21 @@ router.post('/insert', function(req, res, next) {
     var delete_student = "DELETE FROM students"
     var fetch_admin = "SELECT * FROM users WHERE role_id=2";
     var super_admin = ['2','NULL','1','2013-11-15 20:33:03','2019-03-03 17:38:10','2019-03-03 17:38:10','0','0','0','0','','0','2019-03-03 17:38:10','0',''];
-
+    var x = [];
     res.locals.connection.query(fetch_admin, function(err,super_ad) {
         if(err){
             console.log(err);
             return sendError(res,err,"server_error",constants.SERVER_ERROR);
         }
 
-        super_admin.push(super_ad[0]['email'])
-        super_admin.push(super_ad[0]['password'])
-        super_admin.push(super_ad[0]['temp_password'])
         
+
+        if(super_ad.length!=0){
+            x = super_ad;
+            super_admin.push(super_ad[0]['email'])
+            super_admin.push(super_ad[0]['password'])
+            super_admin.push(super_ad[0]['temp_password'])
+        }       
         res.locals.connection.query(delete_user, function(err,delete1) {
             if(err){
                 console.log(err);
@@ -161,18 +165,20 @@ router.post('/insert', function(req, res, next) {
                                                                         return sendError(res,err,"server_error",constants.SERVER_ERROR);
                                                                     }
 
-                                                                    var admin_create_query = "INSERT INTO users (role_id,reset_key,status,last_logged_in,created_at,modified_at,created_by,modified_by,api,is_login,socket_id,is_live,last_online,otp,fcm_token,email,password,temp_password) VALUES ?"
+                                                                    if(x.length!=0){
+                                                                        var admin_create_query = "INSERT INTO users (role_id,reset_key,status,last_logged_in,created_at,modified_at,created_by,modified_by,api,is_login,socket_id,is_live,last_online,otp,fcm_token,email,password,temp_password) VALUES ?"
                                                                     
-                                                                    res.locals.connection.query(admin_create_query, [[super_admin]], function(err,data) {
-                                                                        if(err){
-                                                                            console.log(err);
-                                                                            return sendError(res,err,"server_error",constants.SERVER_ERROR);
-                                                                        }
-
-                                                                        return sendSuccess(res,super_admin);
-                                                                    })    
-
-                    
+                                                                        res.locals.connection.query(admin_create_query, [[super_admin]], function(err,data) {
+                                                                            if(err){
+                                                                                console.log(err);
+                                                                                return sendError(res,err,"server_error",constants.SERVER_ERROR);
+                                                                            }
+    
+                                                                            return sendSuccess(res,super_admin);
+                                                                        })  
+                                                                    }else{
+                                                                       return  sendSuccess(res,student)
+                                                                    }
                                                                 })    
                                                             })
                                                             
@@ -181,8 +187,6 @@ router.post('/insert', function(req, res, next) {
                         
                                                 })        
                                             })  
-                    
-                    
                                         })    
                                          
                                     })
