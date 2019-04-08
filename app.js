@@ -65,8 +65,8 @@ app.use(function(req,res,next){
   res.locals.connection = mysql.createConnection({
     host:'127.0.0.1',
     user:'root',
-    password:'admin',
-    database:'hansis'
+    password:'dcf15f570735b1205ba2ebf26c0c5ff63347836f466cefff',
+    database:'meridian_academy'
   })
 
   res.locals.connection.connect(function(err){

@@ -215,33 +215,28 @@ MainController.controller('MainController',['$scope','$http','$location','ipCook
                         var data = allTextLines[i].split(',');
                         // console.log(data);
                         if (data.length == headers.length) {
-                            var tarr = [];
-                            var tarr2 = [];
-                            var tarr3 = [];
-                            var tarr4 = [];
-                            var tarr5 = [];
+                            var tarr = ['3','e10adc3949ba59abbe56e057f20f883e','MTIzNA==','NULL','1','2013-11-15 20:33:03','2019-03-03 17:38:10','2019-03-03 17:38:10','0','0','0','0','','0','2019-03-03 17:38:10','0',''];
+                            var tarr2 = ['NULL','','1','2019-03-03 17:38:10','2019-03-03 17:38:10','0','0']; //photo
+                            var tarr3 = ['4','e10adc3949ba59abbe56e057f20f883e','MTIzNA==','NULL','1','2013-11-15 20:33:03','2019-03-03 17:38:10','2019-03-03 17:38:10','0','0','0','0','','0','2019-03-03 17:38:10','0',''];
+                            var tarr4 = ['2019-03-03 17:38:10','2019-03-03 17:38:10','0','0','','NULL','','0','0','0','0','1'];
+                            var tarr5 = ['2019-03-03 17:38:10','2019-03-03 17:38:10','0','0','1'];
                             for ( var j = 0; j < headers.length; j++) {
-                                if(j<18){
+                                if(j<1){
                                     tarr.push(data[j].replace(/"/g,""));
-                                    if(j>=4){
-                                        tarr3.push(data[j].replace(/"/g,""));
-                                         
-                                    }
-                                    if(j>=7 && j<=10){
-                                        tarr4.push(data[j].replace(/"/g,""));
-                                        tarr5.push(data[j].replace(/"/g,""));
-                                    }
                                 }
-                                else if(j>=18 && j<32){
+                                else if(j>=1 && j<8){
                                     tarr2.push(data[j].replace(/"/g,""));
+                                    if(j>=5 && j<7){
+                                        tarr4.push(data[j].replace(/"/g,""));   
+                                    }
                                 }
-                                else if(j>=32 && j<36){
+                                else if(j>=8 && j<9){
                                     tarr3.push(data[j].replace(/"/g,""));
                                 }
-                                else if(j>=36 && j<53){
+                                else if(j>=9 && j<16){
                                     tarr4.push(data[j].replace(/"/g,""));
                                 }
-                                else if(j>=53){
+                                else if(j>=16){
                                     tarr5.push(data[j].replace(/"/g,""));
                                 }
                                 

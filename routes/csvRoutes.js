@@ -29,7 +29,7 @@ router.post('/insert', function(req, res, next) {
     var enroll       = req.body.enroll;
 
     
-    var sql = "INSERT INTO users (role_id,password,temp_password,email,reset_key,status,last_logged_in,created_at,modified_at,created_by,modified_by,api,is_login,socket_id,is_live,last_online,otp,fcm_token) VALUES ?";
+    var sql = "INSERT INTO users (role_id,password,temp_password,reset_key,status,last_logged_in,created_at,modified_at,created_by,modified_by,api,is_login,socket_id,is_live,last_online,otp,fcm_token,email) VALUES ?";
 
     res.locals.connection.query(sql, [user], function(err,data) {
         if(err){
@@ -51,7 +51,7 @@ router.post('/insert', function(req, res, next) {
                     i = i-1;
                 }
 
-                var query = "INSERT INTO guardians (name,relation,phone,profession,present_address,permanent_address,religion,photo,other_info,status,created_at,modified_at,created_by,modified_by,user_id) VALUES ?";
+                var query = "INSERT INTO guardians (photo,other_info,status,created_at,modified_at,created_by,modified_by,name,relation,phone,profession,present_address,permanent_address,religion,user_id) VALUES ?";
 
                 res.locals.connection.query(query,[graudian],function(err,graudian_saved){
                     if(err){
@@ -74,7 +74,7 @@ router.post('/insert', function(req, res, next) {
                         }
 
 
-                        var student_user_query = "INSERT INTO users (reset_key,status,last_logged_in,created_at,modified_at,created_by,modified_by,api,is_login,socket_id,is_live,last_online,otp,fcm_token,role_id,password,temp_password,email) VALUES ?";
+                        var student_user_query = "INSERT INTO users (role_id,password,temp_password,reset_key,status,last_logged_in,created_at,modified_at,created_by,modified_by,api,is_login,socket_id,is_live,last_online,otp,fcm_token,email) VALUES ?";
                         res.locals.connection.query(student_user_query, [student_user], function(err,data) {
                             if(err){
                                 console.log(err);
@@ -96,7 +96,7 @@ router.post('/insert', function(req, res, next) {
     
                                     console.log(student);
     
-                                    var student_create = "INSERT INTO students (created_at,modified_at,created_by,modified_by,registration_no,`group`,name,phone,present_address,permanent_address,gender,blood_group,religion,dob,photo,other_info,is_library_member,is_hostel_member,is_transport_member,discount,status,guardian_id,user_id) VALUES ?";
+                                    var student_create = "INSERT INTO students (created_at,modified_at,created_by,modified_by,registration_no,photo,other_info,is_library_member,is_hostel_member,is_transport_member,discount,status,present_address,permanent_address,`group`,name,phone,gender,blood_group,religion,dob,guardian_id,user_id) VALUES ?";
     
                                     res.locals.connection.query(student_create, [student], function(err,data) {
                                         if(err){
@@ -116,12 +116,11 @@ router.post('/insert', function(req, res, next) {
                                     
                                             for(var j=0;j<students.length;j++){
                                                 enroll[j].push(students[j]['id']);
-                                                enroll[j].push("1");
                                             }
 
                                             console.log(enroll)
 
-                                            var enroll_create = "INSERT INTO enrollments (created_at,modified_at,created_by,modified_by,roll_no,academic_year_id,class_id,section_id,student_id,status) VALUES ?";
+                                            var enroll_create = "INSERT INTO enrollments (created_at,modified_at,created_by,modified_by,status,roll_no,academic_year_id,class_id,section_id,student_id) VALUES ?";
 
                                             res.locals.connection.query(enroll_create, [enroll], function(err,data) {
                                                 if(err){
